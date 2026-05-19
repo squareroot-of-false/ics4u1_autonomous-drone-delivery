@@ -23,6 +23,8 @@ public class Location {
         this.y = y;
         this.isDepot = isDepot;
         locationList.add(this);
+        //debating whether to sort the ArrayList immediately
+        //Location.sort(locationList);
 
     }
 
@@ -59,6 +61,26 @@ public class Location {
      */
     public void setName(String name) {
         this.name = name;
+
+    }
+
+    /**
+     * Prevents an obstacle from being in the same place as an Obstacle (child of Location)
+     * @param other another location to compare with
+     * @return false, overridden by Obstacle class
+     */
+    public boolean checkConflict(Location other) {
+        return false;
+
+    }
+
+    /**
+     * Checks if two Location objects have the same coordinates
+     * @param other the other Location object to compare to
+     * @return true if the x and y instance variables are both equal, false otherwise
+     */
+    public boolean samePlace(Location other) {//argument accidentally left out of UML
+        return other != null && this.x == other.x && this.y == other.y;
 
     }
 }

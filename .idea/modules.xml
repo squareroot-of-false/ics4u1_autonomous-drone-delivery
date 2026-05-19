@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/ics4u1_autonomous-drone-delivery.iml" filepath="$PROJECT_DIR$/.idea/ics4u1_autonomous-drone-delivery.iml" />
-      <module fileurl="file://$PROJECT_DIR$/src/src.iml" filepath="$PROJECT_DIR$/src/src.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ics4u1_autonomous-drone-delivery.iml" filepath="$PROJECT_DIR$/ics4u1_autonomous-drone-delivery.iml" />
     </modules>
   </component>
 </project>

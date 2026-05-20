@@ -26,6 +26,17 @@ public class Location {
         //debating whether to sort the ArrayList immediately
         //Location.sort(locationList);
 
+        //error handling
+        if(Math.abs(this.x) > SIZE) {
+            System.out.println("Location out of bounds!");
+            this.x = 0;
+
+        }
+        if(Math.abs(this.y) > SIZE) {
+            System.out.println("Location out of bounds!");
+            this.y = 0;
+        }
+
     }
 
     /**
@@ -92,5 +103,24 @@ public class Location {
     public String toString() {
         return "Name: " + name + "\nPosition: (" + x + ", " + y + ")\nIs Depot: " + isDepot;
 
+    }
+
+    /**
+     * Sorts an ArrayList of Locations by position, using the insertion sort algorithm
+     * @param arr the ArrayList to sort
+     */
+    private static void sort(ArrayList<Location> arr) {
+        for(int i = 1; i < arr.size(); i ++) {
+            for(int j = 0; j < i; j ++) {
+                if(arr.get(i).y < arr.get(j).y ||
+                        (arr.get(i).y == arr.get(j).y && arr.get(i).x < arr.get(j).x)) {
+                    Location temp = arr.get(i);
+                    arr.remove(i);
+                    arr.add(j, temp);
+                    break;
+
+                }
+            }
+        }
     }
 }

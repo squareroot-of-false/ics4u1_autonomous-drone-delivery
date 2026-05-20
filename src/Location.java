@@ -81,6 +81,5 @@ public class Location {
      */
     public boolean samePlace(Location other) {//argument accidentally left out of UML
         return other != null && this.x == other.x && this.y == other.y;
-
     }
 }

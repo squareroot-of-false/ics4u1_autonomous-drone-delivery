@@ -83,4 +83,14 @@ public class Location {
         return other != null && this.x == other.x && this.y == other.y;
 
     }
+
+    /**
+     * Temporary body for testing, will be changed later
+     * @return a String listing the values of each instance variable
+     */
+    @Override
+    public String toString() {
+        return "Name: " + name + "\nPosition: (" + x + ", " + y + ")\nIs Depot: " + isDepot;
+
+    }
 }

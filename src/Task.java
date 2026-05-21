@@ -63,4 +63,43 @@ public class Task {
         return this.minCarryCapacity;
 
     }
+
+    /**
+     * Increments the task state
+     */
+    public void advanceTaskState() {
+        this.taskState ++;
+
+    }
+
+    /**
+     * Checks if the task is completed (taskState is at least 2)
+     * @return
+     */
+    public boolean isCompleted() {
+        return this.taskState >= 2;
+
+    }
+
+    /**
+     * May be updated later
+     * @return a String listing the values of each instance variable
+     */
+    @Override
+    public String toString() {
+        return "Origin:\n" + this.origin + "\nDest:\n" + this.dest +
+                "\nTask State: " + this.taskState + "\nMin Carry Capacity: " + minCarryCapacity;
+
+    }
+
+    /**
+     * Prints out each task in the TaskQueue
+     */
+    public static void displayTasks() {
+        for(int i = 0; i < taskQueue.size(); i ++) {
+            System.out.println((i+1) + ":");
+            System.out.println(taskQueue.get(i));
+
+        }
+    }
 }

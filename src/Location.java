@@ -12,8 +12,8 @@ public class Location {
      * Constructor
      * Adds the object to locationList
      * @param name a String
-     * @param x a positive int that is less than SIZE
-     * @param y a positive int that is less than SIZE
+     * @param x an int that's absolute value is less than SIZE
+     * @param y an int that's absolute value is less than SIZE
      * @param isDepot a boolean value, there will only be one Location
      *                object for which this is true at a given time
      */
@@ -95,7 +95,7 @@ public class Location {
     }
 
     /**
-     * Temporary body for testing, will be changed later
+     * Temporary body for testing, may be changed later
      * @return a String listing the values of each instance variable
      */
     @Override

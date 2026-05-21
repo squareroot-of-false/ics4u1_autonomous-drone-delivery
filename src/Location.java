@@ -95,7 +95,7 @@ public class Location {
     }
 
     /**
-     * Temporary body for testing, will be changed later
+     * Temporary body for testing, may be changed later
      * @return a String listing the values of each instance variable
      */
     @Override

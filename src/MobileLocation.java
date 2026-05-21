@@ -1,6 +1,6 @@
 public class MobileLocation extends Location{
 
-    /**
+    /**.
      * Constructor
      * Adds the object to locationList
      *

@@ -31,7 +31,7 @@ public class Obstacle extends Location{
      * @return true if x and y are the same
      */
     public boolean checkConflict(Location other){
-        return other != null && this.samePlace(other);
+        return this.samePlace(other);
     }
 
     /**

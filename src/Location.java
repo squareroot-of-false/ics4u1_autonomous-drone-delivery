@@ -68,7 +68,7 @@ public class Location {
 
     /**
      * mutator for name
-     * @param name the new value for name
+     * @param name the new value for name, a String
      */
     public void setName(String name) {
         this.name = name;
@@ -77,7 +77,7 @@ public class Location {
 
     /**
      * Prevents an obstacle from being in the same place as an Obstacle (child of Location)
-     * @param other another location to compare with
+     * @param other the other Location object to compare to
      * @return false, overridden by Obstacle class
      */
     public boolean checkConflict(Location other) {
@@ -100,7 +100,8 @@ public class Location {
      */
     @Override
     public String toString() {
-        return "Name: " + name + "\nPosition: (" + x + ", " + y + ")\nIs Depot: " + isDepot;
+        return "Name: " + this.name + "\nPosition: (" + this.x + ", " + this.y +
+                ")\nIs Depot: " + this.isDepot;
 
     }
 

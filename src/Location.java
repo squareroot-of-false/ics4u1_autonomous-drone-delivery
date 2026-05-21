@@ -122,4 +122,20 @@ public class Location {
             }
         }
     }
+
+    /**
+     * Finds and returns the depot
+     * @return the first Location object in locationList that is a depot, null if one can't be found
+     */
+    public static Location getDepot() {
+        for(Location l: locationList) {
+            if(l.isDepot)
+                return l;
+
+        }
+
+        System.out.println("Depot could not be found.");
+        return null;
+
+    }
 }

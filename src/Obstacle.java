@@ -6,13 +6,16 @@ public class Obstacle extends Location{
     /**
      * Constructor
      * Adds the object to locationList
-     *
-     * @param name    a String
-     * @param x       a positive int that is less than SIZE
-     * @param y       a positive int that is less than SIZE
+     * Randomly generates instance variables
      */
-    public Obstacle(String name, int x, int y) {
-        super(name, x, y, false);
+    public Obstacle() {
+        super("Obstacle", (int)(Math.random() * (SIZE*2+1) - SIZE),
+                (int)(Math.random() * (SIZE*2+1) - SIZE), false);
+
+        while(this.time == 0) {
+            this.time = (int)(Math.random() * 52 - 1);
+
+        }
     }
 
     /**

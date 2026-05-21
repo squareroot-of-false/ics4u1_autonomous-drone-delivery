@@ -39,4 +39,20 @@ public class Drone {
         droneList.add(this);
     }
 
+
+    /**
+     * Calculates a route (usually the shortest) from the current location to the destination
+     * @param dest the Location object to pathfind to
+     * @return the route, an ArrayList of bytes
+     */
+    public ArrayList<Byte> pathfind(Location dest) {
+        ArrayList<Byte> route = new ArrayList<>();
+        MobileLocation tempScout = new MobileLocation("FAKE", this.location.getX(), this.location.getY());
+
+        while(!tempScout.samePlace(dest)) {
+            //
+        }
+
+        return route;
+    }
 }

@@ -21,7 +21,7 @@ public class MobileLocation extends Location{
      *                  O for North, 1 for East, 2 for South, 3 for West
      * @return true if the movement is completed successfully, false otherwise
      */
-    public boolean move(int dist, byte direction){//changed from UML, not finished
+    public boolean move(int dist, byte direction){//return type changed from UML
         //Move North
         if(direction == 0){
             this.y += dist;

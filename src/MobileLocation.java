@@ -7,10 +7,9 @@ public class MobileLocation extends Location{
      * @param name    a String
      * @param x       a positive int that is less than SIZE
      * @param y       a positive int that is less than SIZE
-     * @param isDepot a boolean value, there will only be one Location
-     *                object for which this is true at a given time
+
      */
-    public MobileLocation(String name, int x, int y, boolean isDepot) {
+    public MobileLocation(String name, int x, int y) {
         //Mobile locations are never depots
         super(name, x, y, false);
     }
@@ -34,16 +33,19 @@ public class MobileLocation extends Location{
             if(this.x > SIZE){
                 this.x = SIZE;
             }
+        //Move South
         } else if (direction == 2){
             this.y -= dist;
             if(this.y < -SIZE){
                 this.y = -SIZE;
             }
+        //Move West
         } else if (direction == 3){
             this.x -= dist;
             if(this.x < -SIZE){
                 this.x = -SIZE;
             }
+        //Error message if invalid direction inputed
         } else {
             System.out.println("Direction " + direction + " invalid. Direction must be 0, 1, 2 or 3.");
         }
@@ -55,7 +57,7 @@ public class MobileLocation extends Location{
      * @return
      */
     public String toString(){
-        return "Name: " + this.name + "\nX : " + this.x + "\nY: " + this.y + "\n" + "\nIsDepot: " + this.isDepot;
+        return "Name: " + name + "\nPosition: (" + x + ", " + y + ")\nIsDepot: " + isDepot;
     }
 
 

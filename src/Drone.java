@@ -107,10 +107,10 @@ public class Drone {
      * @param dest the Location object to pathfind to
      * @return the route, an ArrayList of bytes
      */
-    public ArrayList<Byte> pathfind(Location dest) {//ready for testing
+    public ArrayList<Byte> pathfind(Location start, Location dest) {//ready for testing *Change from UML
         ArrayList<Byte> route = new ArrayList<>();
         //Creates a temporary MobileLocation to trace a route, moving around obstacles
-        MobileLocation tempScout = new MobileLocation("FAKE", this.location.getX(), this.location.getY());
+        MobileLocation tempScout = new MobileLocation("FAKE", start.getX(), start.getY());
         boolean blockYMovement = false;//Ignored when necessary for diversions
         boolean blockXMovement = false;//Ignored when necessary for diversions
 
@@ -203,7 +203,7 @@ public class Drone {
                 //West, overrides blockYMovement and blockXMovement but doesn't reset them
                 route.add((byte)3);
 
-            } else if(tempScout.samePlace(this.location)) {
+            } else if(tempScout.samePlace(start)) {
                 //Can't move from starting location
                 System.out.println("Could not find a valid route.");
                 return null;
@@ -229,4 +229,30 @@ public class Drone {
         return route;
 
     }
+
+    /**
+     * Method for returning to depot
+     */
+    public void returnToDepot(){
+        //Gets the path to the depot
+        ArrayList<Byte> route = new ArrayList<>();
+        route = pathfind(this.location, Location.getDepot());
+
+        //Moves one step towards the getting to depot
+        location.move(1, route.get(0));
+
+    }
+
+    /**
+     * @param task Task to be completed
+     * @return if drone can carry necessary amount, and if it has battery capacity to complete journey
+     */
+    public boolean canCompleteTask(Task task){
+        //Checks if the drone cannot carry the load for the task
+        //Checks if the drone has enough battery capacity to navigate from where drone is to start of task, to end then back to depot
+        double batteryRequired = pathfind(this.location, task.getOrigin()).size() + pathfind(task.getOrigin(), task.getDest()).size() + pathfind(task.getDest(), Location.getDepot()).size();
+        return (batteryCapacity >= batteryRequired) && (carryCapacity >= task.getMinCarryCapacity());
+    }
+
+
 }

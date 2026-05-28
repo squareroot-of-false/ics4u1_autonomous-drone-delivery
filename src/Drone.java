@@ -89,6 +89,13 @@ public class Drone {
     }
 
     /**
+     * @return drone's current task
+     */
+    public Task getCurrentTask(){ //Addition from UML
+        return currentTask;
+    }
+
+    /**
      * @param name for new name
      */
     public void setName (String name){
@@ -285,9 +292,10 @@ public class Drone {
                 batteryLevel--;
             }
 
-            //If the drone's location is now the same as the end, the state is advanced
+            //If the drone's location is now the same as the end, the state is advanced and task is complete
             if(this.location.samePlace(task.getDest())){
                 task.advanceTaskState();
+                currentTask = null;
             }
         }
     }
@@ -298,7 +306,7 @@ public class Drone {
      * @param task to be completed
      * @return true if any can complete, and false if none can
      */
-    public boolean selectBestDrone(Task task){
+    public static boolean selectBestDrone(Task task){
         //Sorts the drones by battery capacity, highest to lowest with insertion sort
         for (int i = 1; i < droneList.size(); i++){
             Drone key = droneList.get(i);
@@ -313,7 +321,7 @@ public class Drone {
         //Loops through the list of drones from the highest battery to lowest for one that can complete the task
         for(int i = 0; i < droneList.size(); i++){
             //If a drone can complete the task, task is assigned to them, removed from list and method returns true
-            if(droneList.get(i).canCompleteTask(task)){
+            if(droneList.get(i).canCompleteTask(task) && droneList.get(i).currentTask != null){
                 droneList.get(i).currentTask = task;
                 Task.taskQueue.remove(task);
                 return true;

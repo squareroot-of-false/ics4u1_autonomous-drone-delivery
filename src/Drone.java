@@ -2,7 +2,7 @@ import java.util.ArrayList;
 public class Drone {
 
     //Static and instance variables
-    public ArrayList<Drone> droneList = new ArrayList<>();
+    public static ArrayList<Drone> droneList = new ArrayList<>();
     private double batteryCapacity, batteryLevel, carryCapacity, weight;
     private String name;
     private Task currentTask;
@@ -235,11 +235,13 @@ public class Drone {
      */
     public void returnToDepot(){
         //Gets the path to the depot
-        ArrayList<Byte> route = new ArrayList<>();
-        route = pathfind(this.location, Location.getDepot());
+        ArrayList<Byte> route = pathfind(this.location, Location.getDepot());
 
-        //Moves one step towards the getting to depot
-        location.move(1, route.get(0));
+        //Moves one step towards the getting to depot if possible, and reduces battery
+        if(batteryLevel > 0){
+            location.move(1, route.get(0));
+            batteryLevel--;
+        }
 
     }
 
@@ -254,5 +256,90 @@ public class Drone {
         return (batteryCapacity >= batteryRequired) && (carryCapacity >= task.getMinCarryCapacity());
     }
 
+
+    /**
+     * Does the drone's task by taking one step towards the next objective in the task
+     * @param task for the task the drone is completing
+     */
+    public void doTask(Task task){
+        //If Drone has not reached origin of task, it will go there
+        if(task.getTaskState() == 0){
+            //Gets the route to origin of task and takes one move towards that destination if directions are provided and battery level sufficient
+            ArrayList<Byte> route = pathfind(this.location, task.getOrigin());
+            if(route != null && batteryLevel > 0){
+                location.move(1, route.get(0));
+                batteryLevel--;
+            }
+
+            //If the drone's location is now the same as the origin's, the state is advanced
+            if(this.location.samePlace(task.getOrigin())){
+                task.advanceTaskState();
+            }
+
+        //If drone is in the middle of the journey, it will move towards the end point
+        } else if(task.getTaskState() == 1){
+            //Gets the route to end of task and takes one move towards that destination if directions are provided and battery level sufficient
+            ArrayList<Byte> route = pathfind(this.location, task.getDest());
+            if(route != null && batteryLevel > 0){
+                location.move(1, route.get(0));
+                batteryLevel--;
+            }
+
+            //If the drone's location is now the same as the end, the state is advanced
+            if(this.location.samePlace(task.getDest())){
+                task.advanceTaskState();
+            }
+        }
+    }
+
+
+    /**
+     * Picks the best drone to do a task. First sorts the drones by battery level, then checks if any can complete
+     * @param task to be completed
+     * @return true if any can complete, and false if none can
+     */
+    public boolean selectBestDrone(Task task){
+        //Sorts the drones by battery capacity, highest to lowest with insertion sort
+        for (int i = 1; i < droneList.size(); i++){
+            Drone key = droneList.get(i);
+            int j = i -1;
+            while(j >= 0 && droneList.get(j).batteryLevel < key.batteryLevel){
+                droneList.set(j+1, droneList.get(j));
+                j--;
+            }
+            droneList.set(j+1, key);
+        }
+
+        //Loops through the list of drones from the highest battery to lowest for one that can complete the task
+        for(int i = 0; i < droneList.size(); i++){
+            //If a drone can complete the task, task is assigned to them, removed from list and method returns true
+            if(droneList.get(i).canCompleteTask(task)){
+                droneList.get(i).currentTask = task;
+                Task.taskQueue.remove(task);
+                return true;
+            }
+        }
+        //If looped through all and none can do it, returns false
+        return false;
+    }
+
+
+    /**
+     * Prints out each task in the TaskQueue
+     */
+    public static void displayDrones() {
+        for(int i = 0; i < droneList.size(); i ++) {
+            System.out.println((i+1) + ":");
+            System.out.println(droneList.get(i));
+        }
+    }
+
+    /**
+     * toString (temp) Currently outputs all instance variables. Will print in format for grid
+     * @return all info
+     */
+    public String toString(){
+        return "Name: " + name + "\nBattery Capacity: " + batteryCapacity + "\nBattery Level: " + batteryLevel + "\nCarry Capacity: " + carryCapacity + "\nWeight: " + weight + location.toString();
+    }
 
 }

@@ -39,7 +39,7 @@ public class Test {
             System.out.println();
         }
 
-        for(byte i: drone.pathfind(dest)) {
+        for(byte i: drone.pathfind(drone.getLocation(), dest)) {
             System.out.print(i + " ");
         }
     }

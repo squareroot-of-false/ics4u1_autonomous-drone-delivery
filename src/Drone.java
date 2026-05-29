@@ -134,14 +134,30 @@ public class Drone {
             }
         }
 
-        boolean blockYMovement = false;//Ignored when necessary for diversions
-        boolean blockXMovement = false;//Ignored when necessary for diversions
+        boolean blockYMovement = false;
+        boolean blockXMovement = false;
+        boolean directRouteOnly = false;
 
-        while(!tempScout.samePlace(dest) && route.size() <= this.batteryCapacity * 2) {
+        while(!tempScout.samePlace(dest)) {
             //Stops if route length exceeds double the battery capacity (the length may be reduced after the loop)
             //Tries to move towards the destination
             //By default, moves north/south first
-            if(!blockYMovement && (route.isEmpty() || route.getLast() != 2) && tempScout.getY() < dest.getY() && tempScout.move(1, (byte)0)) {//North
+            if(!directRouteOnly && route.size() > this.batteryCapacity * 2) {
+                //Switches to slower algorithm
+                directRouteOnly = true;
+                blockXMovement = false;
+                blockYMovement = false;
+                route.clear();
+                tempScout = new MobileLocation("FAKE", start.getX(), start.getY());
+                for(int i = 0; i < Location.locationList.size(); i ++) {//removes tempScout from the list of Locations
+                    if(Location.locationList.get(i) == tempScout) {
+                        Location.locationList.remove(i);
+                        break;
+
+                    }
+                }
+
+            } else if(!blockYMovement && (route.isEmpty() || route.getLast() != 2) && tempScout.getY() < dest.getY() && tempScout.move(1, (byte)0)) {//North
                 //System.out.print(0);
                 route.add((byte)0);
                 blockXMovement = false;
@@ -161,41 +177,35 @@ public class Drone {
                 route.add((byte) 3);
                 blockYMovement = false;
 
-            } else if((route.isEmpty() || route.getLast() != 2) && tempScout.getY() >= dest.getY() && tempScout.move(1, (byte)0)) {
+            } else if(!directRouteOnly && !blockYMovement && (route.isEmpty() || route.getLast() != 2) && tempScout.getY() >= dest.getY() && tempScout.move(1, (byte)0)) {
                 //North, wrong direction
                 System.out.print(5);
                 route.add((byte)0);
-                blockYMovement = false;//resets after attempting to divert
                 blockXMovement = false;
 
-            } else if((route.isEmpty() || route.getLast() != 0) && tempScout.getY() <= dest.getY() && tempScout.move(1, (byte)2)) {
+            } else if(!directRouteOnly && !blockYMovement && (route.isEmpty() || route.getLast() != 0) && tempScout.getY() <= dest.getY() && tempScout.move(1, (byte)2)) {
                 //South, wrong direction
                 System.out.print(6);
                 route.add((byte)2);
-                blockYMovement = false;
                 blockXMovement = false;
 
-            } else if((route.isEmpty() || route.getLast() != 3) && tempScout.getX() >= dest.getX() && tempScout.move(1, (byte)1)) {
+            } else if(!directRouteOnly && !blockXMovement && (route.isEmpty() || route.getLast() != 3) && tempScout.getX() >= dest.getX() && tempScout.move(1, (byte)1)) {
                 //East, wrong direction
                 System.out.print(7);
                 route.add((byte)1);
                 blockYMovement = false;
-                blockXMovement = false;
 
-            } else if((route.isEmpty() || route.getLast() != 1) && tempScout.getX() <= dest.getX() && tempScout.move(1, (byte)3)) {
+            } else if(!directRouteOnly && !blockXMovement && (route.isEmpty() || route.getLast() != 1) && tempScout.getX() <= dest.getX() && tempScout.move(1, (byte)3)) {
                 //West, wrong direction
                 System.out.print(8);
                 route.add((byte)3);
                 blockYMovement = false;
-                blockXMovement = false;
 
-            } else if(((route.contains((byte)0) && tempScout.getY() <= dest.getY() && route.indexOf((byte)0) > route.indexOf((byte)2))
-                    || (route.contains((byte)2) && tempScout.getY() >= dest.getY() && route.indexOf((byte)2) > route.indexOf((byte)0)))
+            } else if(((route.contains((byte)0)/* && tempScout.getY() <= dest.getY() && route.indexOf((byte)0) > route.indexOf((byte)2)*/)
+                    || (route.contains((byte)2)/* && tempScout.getY() >= dest.getY() && route.indexOf((byte)2) > route.indexOf((byte)0)*/))
                     && tempScout.getX() != dest.getX()) {
                 //Obstacle in the way
                 //Reverts last north/south movement towards the destination, blocks north/south movement
-                //Only reverts movement towards the destination
-                //Last case that will not require a detour that increases the length of the route
                 //System.out.print(4);
                 while(route.getLast() != 0 && route.getLast() != 2) {
                     tempScout.move(1, (byte)((route.getLast() + 2) % 4));
@@ -206,10 +216,9 @@ public class Drone {
                 route.removeLast();
                 blockYMovement = true;
 
-            } else if((route.contains((byte)1) && tempScout.getX() <= dest.getX() && route.indexOf((byte)1) > route.indexOf((byte)3))
-                    || (route.contains((byte)3) && tempScout.getX() >= dest.getX() && route.indexOf((byte)3) > route.indexOf((byte)1))) {
-                //Reverts last east/west movement towards the destination, forces a diversion
-                //Only reverts movement towards the destination
+            } else if(!directRouteOnly && (route.contains((byte)1)/* && tempScout.getX() <= dest.getX() && route.indexOf((byte)1) > route.indexOf((byte)3)*/
+                    || route.contains((byte)3)/* && tempScout.getX() >= dest.getX() && route.indexOf((byte)3) > route.indexOf((byte)1)*/)) {
+                //Reverts last east/west movement towards the destination, blocks east/west movement
                 System.out.print(9);
                 while(route.getLast() != 1 && route.getLast() != 3) {
                     tempScout.move(1, (byte)((route.getLast() + 2) % 4));
@@ -218,7 +227,6 @@ public class Drone {
                 }
                 tempScout.move(1, (byte)((route.getLast() + 2) % 4));
                 route.removeLast();
-                blockYMovement = true;
                 blockXMovement = true;
 
             } /*else if((route.isEmpty() || route.getLast() != 2) && tempScout.move(1, (byte)0)) {
@@ -237,17 +245,20 @@ public class Drone {
                 //West, overrides blockYMovement and blockXMovement but doesn't reset them
                 route.add((byte)3);
 
-            }*/ else if(tempScout.samePlace(start)) {
+            }*/ else if(!directRouteOnly && tempScout.samePlace(start)) {
                 //Can't move from starting location
                 System.out.println("Could not find a valid route.");
                 return null;
 
-            } else {
+            } else if(!directRouteOnly && !route.isEmpty()) {
                 System.out.print('F');
                 //Reverts the last movement, blocks that movement from being immediately repeated
                 tempScout.move(1, (byte)((route.getLast() + 2) % 4));
                 route.add((byte)((route.getLast() + 2) % 4));
 
+            } else {
+                System.out.println("Could not find a valid route.");
+                return null;
             }
             //System.out.print(route.size() + " ");//TEMP
         }

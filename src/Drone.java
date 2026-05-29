@@ -179,25 +179,25 @@ public class Drone {
 
             } else if(!directRouteOnly && !blockYMovement && (route.isEmpty() || route.getLast() != 2) && tempScout.getY() >= dest.getY() && tempScout.move(1, (byte)0)) {
                 //North, wrong direction
-                System.out.print(5);
+                //System.out.print(5);
                 route.add((byte)0);
                 blockXMovement = false;
 
             } else if(!directRouteOnly && !blockYMovement && (route.isEmpty() || route.getLast() != 0) && tempScout.getY() <= dest.getY() && tempScout.move(1, (byte)2)) {
                 //South, wrong direction
-                System.out.print(6);
+                //System.out.print(6);
                 route.add((byte)2);
                 blockXMovement = false;
 
             } else if(!directRouteOnly && !blockXMovement && (route.isEmpty() || route.getLast() != 3) && tempScout.getX() >= dest.getX() && tempScout.move(1, (byte)1)) {
                 //East, wrong direction
-                System.out.print(7);
+                //System.out.print(7);
                 route.add((byte)1);
                 blockYMovement = false;
 
             } else if(!directRouteOnly && !blockXMovement && (route.isEmpty() || route.getLast() != 1) && tempScout.getX() <= dest.getX() && tempScout.move(1, (byte)3)) {
                 //West, wrong direction
-                System.out.print(8);
+                //System.out.print(8);
                 route.add((byte)3);
                 blockYMovement = false;
 
@@ -219,7 +219,7 @@ public class Drone {
             } else if(!directRouteOnly && (route.contains((byte)1)/* && tempScout.getX() <= dest.getX() && route.indexOf((byte)1) > route.indexOf((byte)3)*/
                     || route.contains((byte)3)/* && tempScout.getX() >= dest.getX() && route.indexOf((byte)3) > route.indexOf((byte)1)*/)) {
                 //Reverts last east/west movement towards the destination, blocks east/west movement
-                System.out.print(9);
+                //System.out.print(9);
                 while(route.getLast() != 1 && route.getLast() != 3) {
                     tempScout.move(1, (byte)((route.getLast() + 2) % 4));
                     route.removeLast();
@@ -251,7 +251,7 @@ public class Drone {
                 return null;
 
             } else if(!directRouteOnly && !route.isEmpty()) {
-                System.out.print('F');
+                //System.out.print('F');
                 //Reverts the last movement, blocks that movement from being immediately repeated
                 tempScout.move(1, (byte)((route.getLast() + 2) % 4));
                 route.add((byte)((route.getLast() + 2) % 4));
@@ -262,7 +262,7 @@ public class Drone {
             }
             //System.out.print(route.size() + " ");//TEMP
         }
-        System.out.println();
+        //System.out.println();
 
         if(route.size() > this.batteryCapacity * 2) {
             System.out.println("Pathfinding timed out.");
@@ -285,7 +285,7 @@ public class Drone {
             }
         }
 
-        System.out.println(route.size());//TEMP
+        //System.out.println(route.size());//TEMP
         return route;
 
     }

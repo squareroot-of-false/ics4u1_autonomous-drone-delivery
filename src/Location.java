@@ -139,4 +139,10 @@ public class Location {
         return null;
 
     }
+
+    /**
+     * Method to be overidden in obstacle class
+     */
+    public void decay(){
+    }
 }

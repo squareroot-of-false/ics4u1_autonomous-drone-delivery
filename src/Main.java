@@ -151,6 +151,14 @@ public class Main {
                     }
                 }
             }
+
+            //Loops through Locations. If it is named obstacle, decays the time
+            for (int i = 0; i < Location.locationList.size(); i++){
+                if (Location.locationList.get(i).getName().equals("Obstacle")){
+                    Location.locationList.get(i).decay();
+                }
+            }
+
         }
     }
 }

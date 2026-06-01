@@ -27,19 +27,20 @@ public class Main {
             System.out.println("2 Manage Tasks");
             System.out.println("3 See Grid");
             System.out.println("4 Exit");
-            System.out.print("Enter an option:");
+            System.out.print("Enter an option: ");
             int choice = reader.nextInt();
 
             if(choice == 1){
                 //Menu for drones
                 System.out.println("1 Add Drone");
                 System.out.println("2 View Drones");
-                System.out.print("Enter an option:");
+                System.out.print("Enter an option: ");
                 int droneChoice = reader.nextInt();
 
                 if(droneChoice == 1){
                     //Creates a new drone by user's specifications
                     System.out.print("Enter drone name: ");
+                    reader.nextLine();
                     String name = reader.nextLine();
                     System.out.print("Enter drone battery capacity: ");
                     double batteryCapacity = reader.nextDouble();
@@ -58,7 +59,7 @@ public class Main {
                 //Task options
                 System.out.println("1 Add Task");
                 System.out.println("2 View Tasks");
-                System.out.println("Enter an option: ");
+                System.out.print("Enter an option: ");
                 int taskChoice = reader.nextInt();
 
                 if(taskChoice == 1){
@@ -74,14 +75,14 @@ public class Main {
                     System.out.print("Enter the minimum carry capacity for the task: ");
                     double minCarryCapacity = reader.nextDouble();
                     //Priority task
-                    System.out.print("Enter 1 if priority task: ");
+                    System.out.print("Enter 1 if priority task, 0 to continue: ");
                     int temp = reader.nextInt();
                     boolean priority = false;
                     if(temp == 1){
                         priority = true;
                     }
 
-                    Task tempTask = new Task(new Location("",originX,originY,false), new Location("",destX,destY,false), minCarryCapacity, priority);
+                    Task tempTask = new Task(new Location("T",originX,originY,false), new Location("T",destX,destY,false), minCarryCapacity, priority);
                 }
             } else if (choice == 3){
                 //Outputs the grid

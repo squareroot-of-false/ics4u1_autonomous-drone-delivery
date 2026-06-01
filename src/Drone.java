@@ -400,7 +400,7 @@ public class Drone {
      * @return all info
      */
     public String toString(){
-        return "Name: " + name + "\nBattery Capacity: " + batteryCapacity + "\nBattery Level: " + batteryLevel + "\nCarry Capacity: " + carryCapacity + "\nWeight: " + weight + location.toString();
+        return "Name: " + name + "\nBattery Capacity: " + batteryCapacity + "\nBattery Level: " + batteryLevel + "\nCarry Capacity: " + carryCapacity + "\nWeight: " + weight + "\n"+location.toString();
     }
 
 }
